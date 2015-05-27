@@ -11,11 +11,11 @@ class TwitterController extends AppController {
 
   public function beforeFilter() {
     parent::beforeFilter();
-    $this->Auth->allow(array('redirect_twitter','tw_callback'));
+    $this->Auth->allow(array('login','tw_callback'));
   }
 
 
-  public function redirect_twitter() {
+  public function login() {
     CakeSession::start();
     $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
 
