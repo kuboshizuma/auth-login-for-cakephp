@@ -48,7 +48,7 @@ class AppController extends Controller {
           'loginError' => 'パスワードもしくはログインIDをご確認下さい。',
           'authError' => 'ご利用されるにはログインが必要です。',
           'loginAction' => array('controller' => 'users', 'action' => 'index'),
-          'loginRedirect' => array('controller' => 'users', 'action' => 'index'),
+          'loginRedirect' => array('controller' => 'users', 'action' => 'success'),
           'logoutRedirect' => array('controller' => 'users', 'action' => 'index'),
       ),
   );

@@ -20,6 +20,12 @@ class UsersController extends AppController {
     $this->set('user_data', $user_data);
   }
 
+  public function logout() {
+    $this->Auth->logout();
+    $this->redirect($this->Auth->logoutRedirect);
+  }
+
+
 
 }
 

@@ -11,7 +11,7 @@ class TwitterController extends AppController {
 
   public function beforeFilter() {
     parent::beforeFilter();
-    $this->Auth->allow(array('redirect_twitter','callback'));
+    $this->Auth->allow(array('redirect_twitter','tw_callback'));
   }
 
 

@@ -7,8 +7,14 @@ class FacebookController extends AppController {
   public $components = array('Facebook');
 
 
+  public function beforeFilter() {
+    parent::beforeFilter();
+    $this->Auth->allow(array('login','fb_callback'));
+  }
+
+
   //facebookの認証処理部分
-  public function login(){
+  public function login() {
     //メールアドレスの取得の許可をユーザーから得る
     Configure::load("facebookConfig.php");
     define('APP_ID', Configure::read("facebookId"));
