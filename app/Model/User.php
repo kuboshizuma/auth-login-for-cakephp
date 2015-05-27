@@ -1,41 +1,79 @@
 <?php
+App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 
-class User extends AppModel{
+class User extends AppModel {
   public $name = 'User';
 
-  function registerUser($access_token, $content){
+  function registerTwitterUser($content) {
+
     $params = array(
       'conditions' => array(
-        'User.oauth_token' => $access_token['oauth_token']
+        'User.uid' => $content['id']
       )
     );
 
     $user_data = $this->find('first', $params);
+
     // 未登録であれば、登録開始
     if (!$user_data) {
+      $passwordHasher = new SimplePasswordHasher();
+      $password = $passwordHasher->hash('twitter');
       $data = array(
         'User' =>
           array(
-            'twitter_id' => $access_token['user_id'],
-            'account' => $access_token['screen_name'],
             'username' => $content['name'],
-            'image' => $content['profile_image_url'],
-            'oauth_token' => $access_token['oauth_token'],
-            'oauth_token_secret' => $access_token['oauth_token_secret']
+            'auth_type' => 3,
+            'user_image' => $content['profile_image_url'],
+            'uid' => $content['id'],
+            'password' => $password,
+            'is_activate' => 1
           )
       );
       $this->save($data);
     }
   }
 
-  public function getTwitterUser($oauth_token){
+
+  function registerFacebookUser($myFbData) {
+
+    $params = array(
+      'conditions' => array(
+        'User.uid' => $myFbData['id']
+      )
+    );
+
+    $user_data = $this->find('first', $params);
+
+    // 未登録であれば、登録開始
+    if (!$user_data) {
+      $passwordHasher = new SimplePasswordHasher();
+      $password = $passwordHasher->hash('facebook');
+      $data = array(
+        'User' =>
+          array(
+            'username' => $myFbData['first_name'].' '.$myFbData['last_name'],
+            'auth_type' => 2,
+            'user_image' => 'https://graph.facebook.com/'.$myFbData['id'].'/picture',
+            'uid' => $myFbData['id'],
+            'email' => $myFbData['email'],
+            'password' => $password,
+            'is_activate' => 1
+          )
+      );
+      $this->save($data);
+    }
+  }
+
+
+  public function getUser($uid) {
      $params = array(
       'conditions' => array(
-        'User.oauth_token' => $oauth_token
+        'User.uid' => $uid
       )
     );
     $user_data = $this->find('first', $params);
     return $user_data;
   }
+
 
 }

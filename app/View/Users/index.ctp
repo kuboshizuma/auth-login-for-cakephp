@@ -1,2 +1,2 @@
-<?php echo $this->Form->create('Twitters',array('action'=>'redirect_twitter'));?>
-<?php echo $this->Form->end(__('Twitter で Login'));?>
+<?php echo $this->Html->link('twitterログイン', '/twitter/redirect_twitter'); ?>
+<?php echo $this->Html->link('facebookログイン', '/facebook/login'); ?>

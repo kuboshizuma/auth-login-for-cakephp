@@ -2,6 +2,7 @@
 #################################################
 /app/Config/database.php
 /app/Config/core.php
+/app/Config/facebookConfig.php
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
