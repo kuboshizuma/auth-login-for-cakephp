@@ -1,50 +1,80 @@
-# CakePHP
+# 初期設定
 
-[![Latest Stable Version](https://poser.pugx.org/cakephp/cakephp/v/stable.svg)](https://packagist.org/packages/cakephp/cakephp)
-[![License](https://poser.pugx.org/cakephp/cakephp/license.svg)](https://packagist.org/packages/cakephp/cakephp)
-[![Bake Status](https://secure.travis-ci.org/cakephp/cakephp.png?branch=master)](http://travis-ci.org/cakephp/cakephp)
-[![Code consistency](http://squizlabs.github.io/PHP_CodeSniffer/analysis/cakephp/cakephp/grade.svg)](http://squizlabs.github.io/PHP_CodeSniffer/analysis/cakephp/cakephp/)
+## databaseの設定
+app/Config/database.phpを設定する。
+app/Config/database.php.default.phpをコピーして、database.phpを作成する。
+その後、自分の環境に合わせて設定する。
 
-[![CakePHP](http://cakephp.org/img/cake-logo.png)](http://www.cakephp.org)
+## core.phpの設定
+app/Config/core.phpを設定する。
+app/Config/core.php.defaultをコピーして、core.phpを作成する。
 
-CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Active Record, Association Data Mapping, Front Controller and MVC.
-Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
+## facebookの設定
+app/Config/facebookConfig.phpを作成する。(適宜、値は用意）
 
+```php:facebookConfig.php
+<?php
+$config['facebookId'] = '9348594754389823423';
+$config['facebookSecret'] = 'ewf9v4ijfi943if9ei023ie';
+$config['callback'] = 'http://dev.login.com/facebook/fb_callback';
+?>
+```
 
-## Some Handy Links
+## twitterの設定
+app/Config/core.phpの最下部に下記を記述。(適宜、値は用意)
 
-[CakePHP](http://www.cakephp.org) - The rapid development PHP framework
+```
+/*Twitter-login設定*/
+define('CONSUMER_KEY', 'fjkejfowjedsajfaskdjf');
+define('CONSUMER_SECRET', 'sdfkajsdfviojdifoejwkdsjdk');
+define('OAUTH_CALLBACK', 'http://dev.login.com/twitter/tw_callback');
+```
 
-[CookBook](http://book.cakephp.org) - THE CakePHP user documentation; start learning here!
+## Debug.kitの設定
+直下にpluginsを作成して「DebugKit」フォルダを作成する。
 
-[API](http://api.cakephp.org) - A reference to CakePHP's classes
+下記URLからDebugKitをダウンロード
+https://github.com/cakephp/debug_kit/tree/2.2
 
-[Plugins](http://plugins.cakephp.org/) - A repository of extensions to the framework
+## Virtual Hostの設定
+### 1. httpd.confの編集
+Virtual Hostの設定を可能にするため以下のコメントアウトをはずす。
+/Applications/MAMP/conf/apache/httpd.conf
 
-[The Bakery](http://bakery.cakephp.org) - Tips, tutorials and articles
+(変更前)
 
-[Community Center](http://community.cakephp.org) - A source for everything community related
+```
+# Virtual hosts
+# Include /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
+```
 
-[Training](http://training.cakephp.org) - Join a live session and get skilled with the framework
+(変更後)
 
-[CakeFest](http://cakefest.org) - Don't miss our annual CakePHP conference
+```
+# Virtual hosts
+Include /Applications/MAMP/conf/apache/extra/httpd-vhosts.conf
+```
 
-[Cake Software Foundation](http://cakefoundation.org) - Promoting development related to CakePHP
+### 2. httpd-vhosts.confの編集
+バーチャルホストのドメインやポートを指定するために、/Applications/MAMP/conf/apache/extra/httpd-vhosts.confに追記。
 
+```
+<VirtualHost *:80>
+    DocumentRoot "/Applications/MAMP/htdocs/login"
+    ServerName dev.idearoom.com
+    ErrorLog "logs/dev.login.com-error_log"
+    CustomLog "logs/dev.login.com-access_log" common
+</VirtualHost>
+```
 
-## Get Support!
+### 3. hotsの編集
+バーチャルホストを有効にするために、/etc/hostsに以下を記述。
 
-[#cakephp](http://webchat.freenode.net/?channels=#cakephp) on irc.freenode.net - Come chat with us, we have cake
+```
+127.0.0.1 dev.login.com
+```
 
-[Google Group](https://groups.google.com/group/cake-php) - Community mailing list and forum
-
-[GitHub Issues](https://github.com/cakephp/cakephp/issues) - Got issues? Please tell us!
-
-[Roadmaps](https://github.com/cakephp/cakephp/wiki#roadmaps) - Want to contribute? Get involved!
-
-
-## Contributing
-
-[CONTRIBUTING.md](CONTRIBUTING.md) - Quick pointers for contributing to the CakePHP project
-
-[CookBook "Contributing" Section (2.x)](http://book.cakephp.org/2.0/en/contributing.html) [(3.0)](http://book.cakephp.org/3.0/en/contributing.html) - Version-specific details about contributing to the project
+### 4. MAMPでサーバーを再起動
+再起動後、
+http://dev.login.com
+にアクセス可能になる。
